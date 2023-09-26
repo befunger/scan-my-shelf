@@ -2,8 +2,8 @@
 import openai   # For ChatGPT access
 import json     # For json handling
 
-# TODO: Change this to import from openai.txt
-openai.api_key = "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"
+with open("C:/Projects/scan-my-shelf/API/openai.txt", 'r') as f:
+    openai.api_key = f.read()
 
 def format_prompt(extracted_text):
     '''Formats a ready prompt from the extracted text'''
