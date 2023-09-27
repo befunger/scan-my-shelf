@@ -30,15 +30,31 @@ def detect_labels(rekognition, image_path):
         print(f"Label: {label['Name']}, Confidence: {label['Confidence']}")
 
 
-def detect_books(rekognition, image_path, confidence_threshold=50):
+def detect_books(rekognition, image_path, object_threshold=50):
     '''
     Function for extracting bounding boxes of the books in a given image
     image_path: File path to image to be inspected
-    confidence_threshold: Required confidence for including a label
+    confidence_threshold: Required confidence for including an object detection
     '''
     # Load the image as bytes
     with open(image_path, 'rb') as image_file:
         image_bytes = image_file.read()
+
+    # Get bounding box information of book objects
+    book_information = get_book_bounding_boxes(rekognition, image_bytes, object_threshold)
+
+    # Perform text detection for each book
+    for detection in book_information:
+        bounding_box = detection['BoundingBox']
+        # Extract text within bounding box
+        extracted_text = extract_text_from_bounding_box(rekognition, image_bytes, bounding_box)
+        # Add text information
+        detection['ExtractedText'] = extracted_text
+
+    return book_information
+
+def get_book_bounding_boxes(rekognition, image_bytes, confidence_threshold):
+    '''Returns list of bounding boxes detected for book-relevant labels'''
 
     # Detect labels (objects) in the image
     response = rekognition.detect_labels(
@@ -47,26 +63,21 @@ def detect_books(rekognition, image_path, confidence_threshold=50):
         MinConfidence=confidence_threshold  # Confidence threshold for detected labels
     )
 
-    # Initialize a list to store bounding boxes of books
-    book_bounding_boxes = []
+    book_information = []
 
-    # Iterate through the detected labels
     for label in response['Labels']:
         # Check if the label is book or book-related
         if 'Book' in label['Name'] or 'Page' in label['Name'] or 'Publication' in label['Name']:
             for instance in label['Instances']:
                 bounding_box = instance['BoundingBox']
-                # Get text from within the bounding box
-                extracted_text = extract_text_from_bounding_box(rekognition, image_bytes, bounding_box)
                 # Save relevant information
-                book_bounding_boxes.append({
+                book_information.append({
                     'Label': label['Name'],
                     'Confidence': instance['Confidence'],
-                    'BoundingBox': bounding_box,
-                    'ExtractedText' : extracted_text
+                    'BoundingBox': bounding_box
                 })
 
-    return book_bounding_boxes
+    return book_information
 
 
 def extract_text_from_bounding_box(rekognition, image_bytes, bounding_box):
