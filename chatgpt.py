@@ -34,13 +34,13 @@ def format_multi_prompt(extracted_text):
         
     Extracted text: {extracted_text}
 
-    Format: {{"book_1": ['title_1', 'author_1'], "book_2": ['title_2', 'author_2']}}
+    Format: {{"book": ['book_1', 'book_2'], "author": ['author_1', 'author_2']}}
     '''
     return GPT_GET_BOOKS_PROMPT
 
 
 def get_titles_from_text(extracted_text: str,
-                        multi_detect: bool=False, 
+                        multi_detect: bool=False,
                         model_name: str="gpt-3.5-turbo"
                         ) -> str:
     '''Get responses from an OpenAI LLM model for given queries'''
