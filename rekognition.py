@@ -88,8 +88,20 @@ def extract_text_from_bounding_box(rekognition, image_bytes, bounding_box):
     region_image.save(region_image_bytes, format='JPEG')
     region_image_bytes = region_image_bytes.getvalue()
 
+    # Create filter for image based on bounding box
+    bounding_box_filter = {
+      "RegionsOfInterest": [ 
+         {"BoundingBox": bounding_box}
+      ],
+      "WordFilter": { 
+         "MinBoundingBoxHeight": 0,
+         "MinBoundingBoxWidth": 0,
+         "MinConfidence": 20
+      }
+   }
+
     # Use Amazon Rekognition to detect text in the region
-    response = rekognition.detect_text(Image={'Bytes': region_image_bytes})
+    response = rekognition.detect_text(Image={'Bytes': image_bytes}, Filters=bounding_box_filter)
 
     # Extract text detected in the region
     extracted_text = ''
