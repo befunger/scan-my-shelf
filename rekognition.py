@@ -30,7 +30,7 @@ def detect_labels(rekognition, image_path):
         print(f"Label: {label['Name']}, Confidence: {label['Confidence']}")
 
 
-def detect_books(rekognition, image_path, object_threshold=50):
+def detect_books(rekognition, image_path, object_threshold=10, text_threshold=90):
     '''
     Function for extracting bounding boxes of the books in a given image
     image_path: File path to image to be inspected
@@ -47,7 +47,7 @@ def detect_books(rekognition, image_path, object_threshold=50):
     for detection in book_information:
         bounding_box = detection['BoundingBox']
         # Extract text within bounding box
-        extracted_text = extract_text_from_bounding_box(rekognition, image_bytes, bounding_box)
+        extracted_text = extract_text_from_bounding_box(rekognition, image_bytes, bounding_box, text_threshold)
         detection['ExtractedText'] = extracted_text
 
     return book_information
@@ -79,7 +79,7 @@ def get_book_bounding_boxes(rekognition, image_bytes, confidence_threshold):
     return book_information
 
 
-def extract_text_from_bounding_box(rekognition, image_bytes, bounding_box):
+def extract_text_from_bounding_box(rekognition, image_bytes, bounding_box, confidence_threshold):
     '''Extract text from a bounding box using Amazon Rekognition'''
     # Create filter for image based on bounding box
     bounding_box_filter = {
@@ -89,7 +89,7 @@ def extract_text_from_bounding_box(rekognition, image_bytes, bounding_box):
       "WordFilter": { 
          "MinBoundingBoxHeight": 0,
          "MinBoundingBoxWidth": 0,
-         "MinConfidence": 20
+         "MinConfidence": confidence_threshold
       }
    }
 
