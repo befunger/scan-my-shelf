@@ -48,7 +48,6 @@ def detect_books(rekognition, image_path, object_threshold=50):
         bounding_box = detection['BoundingBox']
         # Extract text within bounding box
         extracted_text = extract_text_from_bounding_box(rekognition, image_bytes, bounding_box)
-        # Add text information
         detection['ExtractedText'] = extracted_text
 
     return book_information
@@ -82,23 +81,6 @@ def get_book_bounding_boxes(rekognition, image_bytes, confidence_threshold):
 
 def extract_text_from_bounding_box(rekognition, image_bytes, bounding_box):
     '''Extract text from a bounding box using Amazon Rekognition'''
-    # Get image dimensions
-    image_width, image_height = Image.open(io.BytesIO(image_bytes)).size
-
-    # Extract bounding box coordinates
-    left = int(bounding_box['Left'] * image_width)
-    top = int(bounding_box['Top'] * image_height)
-    width = int(bounding_box['Width'] * image_width)
-    height = int(bounding_box['Height'] * image_height)
-
-    # Crop the region from the image
-    region_image = Image.open(io.BytesIO(image_bytes)).crop((left, top, left + width, top + height))
-
-    # Convert cropped image to bytes
-    region_image_bytes = io.BytesIO()
-    region_image.save(region_image_bytes, format='JPEG')
-    region_image_bytes = region_image_bytes.getvalue()
-
     # Create filter for image based on bounding box
     bounding_box_filter = {
       "RegionsOfInterest": [ 
