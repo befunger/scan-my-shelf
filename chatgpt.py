@@ -41,7 +41,7 @@ def format_multi_prompt(extracted_text):
 
 def get_titles_from_text(extracted_text: str,
                         multi_detect: bool=False,
-                        model_name: str="gpt-3.5-turbo-instruct"
+                        model_name: str="gpt-3.5-turbo"
                         ) -> str:
     '''Get responses from an OpenAI LLM model for given queries'''
 
