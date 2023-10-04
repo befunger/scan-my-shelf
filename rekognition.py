@@ -1,10 +1,6 @@
 '''Utilities for accessing and using the Amazon Rekognition API'''
 
-# For image manipulation (Cropping a sub-image for text detection)
-import io
-from PIL import Image
-
-# For Amazon Rekognition
+# For Amazon Rekognition API
 import boto3
 
 def initialise_rekognition():
