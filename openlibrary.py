@@ -2,6 +2,7 @@
 import requests
 
 def search_books(params):
+    '''Searches for books in the Open Library database using the supplied parameters'''
     base_url = "https://openlibrary.org/search.json?"
 
     response = requests.get(f"{base_url}", params=params)

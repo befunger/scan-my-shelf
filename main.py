@@ -34,15 +34,16 @@ if VERIFY_BOOK_TITLES:
 
 # Get Google Books result from search queries
 results = set()
+print("----")
 for search_term in search_queries:
     result = books.search_books(search_term)
     print("Search term:", search_term)
     if not result is None and result['totalItems'] > 0:
-        item = result['items'][0] # Gets the first result. Note that this seems to often turn up very irrelevant 
+        item = result['items'][0] # Gets the first result. Note that this seems to often turn up very irrelevant
         volume_info = item['volumeInfo']
         # entry = f"Title: {volume_info.get('title')}\nAuthors: {', '.join(volume_info.get('authors', ['N/A']))}\nRating: {volume_info.get('averageRating')}\nSummary: {volume_info.get('description')}"
         entry = f"Title: {volume_info.get('title')}\nAuthors: {', '.join(volume_info.get('authors', ['N/A']))}"
         results.add(entry)
-        print(f'----\n{entry}')
+        print(f'{entry}\n----')
     else:
-        print("----\nNo book found for the extracted text.")
+        print("No book found for the extracted text.\n----")
