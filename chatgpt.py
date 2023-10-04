@@ -52,11 +52,6 @@ def get_titles_from_text(extracted_text: str,
 
     return parsed
 
-def check_book(text: str):
-    '''Verifies whether a title-author pair is a legitimate book.'''
-    # TODO: Replace with a prompt to ChatGPT. Do Prompt Engineering.
-    return True
-
 def verify_book(book_text: str,
                 model_name: str="gpt-3.5-turbo"
                 ) -> bool:
