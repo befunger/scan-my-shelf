@@ -27,11 +27,6 @@ def format_multi_prompt(extracted_text):
     '''
     return gpt_get_books_prompt
 
-def check_book(text: str):
-    '''Verifies whether a title-author pair is a legitimate book.'''
-    # TODO: Replace with a prompt to ChatGPT. Do Prompt Engineering.
-    return True
-
 def get_titles_from_text(extracted_text: str,
                         multi_detect: bool=False,
                         model_name: str="gpt-3.5-turbo"
@@ -56,3 +51,37 @@ def get_titles_from_text(extracted_text: str,
     parsed = json.loads(text)
 
     return parsed
+
+def check_book(text: str):
+    '''Verifies whether a title-author pair is a legitimate book.'''
+    # TODO: Replace with a prompt to ChatGPT. Do Prompt Engineering.
+    return True
+
+def verify_book(book_text: str,
+                model_name: str="gpt-3.5-turbo"
+                ) -> bool:
+    '''Verify book title-author pair using OpenAI LLM model'''
+
+    completion = openai.ChatCompletion.create(
+        model = model_name,
+        messages=[
+            {"role": "system", "content": "You are a library assistant who provides accurate knowledge on books. Users will provide an author and book title and you respond True or False depending on if the book exists. Input is always of format 'Title, Author'. Output only True or False."},
+            {"role": "user", "content": book_text}
+        ],
+        temperature = 0.1
+    )
+
+    output = completion.choices[0].message.content
+
+    # return output == 'True'
+    if output == 'True':
+        print(f"TRUE: {book_text} matches.")
+        return True
+
+    if output == 'False':
+        print(f"FALSE: {book_text} was rejected.")
+        return False
+
+    # This should never happen
+    print(f"Output format mismatch. Input: {book_text}\nOutput: {output}")
+    return False
