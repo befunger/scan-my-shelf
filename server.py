@@ -41,7 +41,7 @@ def recognize_books(image):
         if not result is None and result['totalItems'] > 0:
             item = result['items'][0] # Gets the first result. Note that this seems to often turn up very irrelevant results when the query is poor
             volume_info = item['volumeInfo']
-            entry = {'title' : volume_info.get('title'), 'authors' : ', '.join(volume_info.get('authors', ['N/A'])), 'rating' : volume_info.get('averageRating'), 'summary' : volume_info.get('description')}
+            entry = {'title' : volume_info.get('title'), 'author' : ', '.join(volume_info.get('authors', ['N/A'])), 'rating' : volume_info.get('averageRating'), 'summary' : volume_info.get('description')}
             results.append(entry)
 
     # Convert set of results into json
@@ -68,4 +68,4 @@ def recognize_books_endpoint():
 
 
 if __name__ == '__main__':
-    app.run(debug=True, port=8000)
+    app.run(debug=True, port=8001)

@@ -4,7 +4,7 @@ import time
 import requests
 
 # Endpoint URL
-API_URL = 'http://127.0.0.1:8000/recognize_books'  # Change this to your actual API URL
+API_URL = 'http://127.0.0.1:8001/recognize_books'  # Change this to your actual API URL
 
 def test_api_with_image(image):
     '''Tests the API with a given image'''
@@ -18,7 +18,7 @@ def test_api_with_image(image):
     # Print the response from the API
     print("Response code:", response.status_code)
     for index, book in enumerate(response.json()['books'], start=1):
-        print(f"Book {index}.\n    Title: {book['title']}\n    Author: {book['authors']}")
+        print(f"Book {index}.\n    Title: {book['title']}\n    Author: {book['author']}")
 
 if __name__ == '__main__':
     # Image path for test image
