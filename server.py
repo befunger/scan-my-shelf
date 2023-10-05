@@ -51,8 +51,10 @@ def recognize_books(image):
 @app.route('/recognize_books', methods=['POST'])
 def recognize_books_endpoint():
     '''Endpoint for receiving API requests to detect books'''
+    print("Request incoming!")
     # Check if the request contains a file
     if 'image' not in request.files:
+        print("Request rejected. No image file provided.")
         return jsonify({"error": "No image file provided"})
 
     # Get the image from the request
@@ -63,9 +65,10 @@ def recognize_books_endpoint():
     extracted_books = recognize_books(image_data)
 
     # Return the extracted book information as JSON response
+    print("Request fulfilled")
     return jsonify(extracted_books)
 
 
 
 if __name__ == '__main__':
-    app.run(debug=True, port=8001)
+    app.run('192.168.56.1', port=8001, debug=True)
