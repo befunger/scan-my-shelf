@@ -1,4 +1,4 @@
-'''Illustrates the full pipeline usage of the application'''
+'''Illustrates the full pipeline usage of the application (Similar to server.py, but without launching a server)'''
 import time
 
 import googlebooks as books
