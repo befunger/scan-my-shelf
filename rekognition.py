@@ -8,16 +8,14 @@ def initialise_rekognition():
     return boto3.client('rekognition')
 
 
-def detect_labels(rekognition, image_path):
+def detect_labels(rekognition, image):
     '''
     Prints out information about detected labels in an image using Amazon Rekognition
-    image_path: file path to the image to be used
+    image: image to be used
     '''
-    with open(image_path, 'rb') as image_file:
-        image_bytes = image_file.read()
 
     response = rekognition.detect_labels(
-        Image={'Bytes': image_bytes},
+        Image={'Bytes': image},
         MaxLabels=10  # Maximum number of labels to return
     )
 
@@ -26,24 +24,21 @@ def detect_labels(rekognition, image_path):
         print(f"Label: {label['Name']}, Confidence: {label['Confidence']}")
 
 
-def detect_books(rekognition, image_path, object_threshold=10, text_threshold=90):
+def detect_books(rekognition, image, object_threshold=10, text_threshold=90):
     '''
     Function for extracting bounding boxes of the books in a given image
-    image_path: File path to image to be inspected
+    image_bytes: image to be inspected (loaded as bytes)
     confidence_threshold: Required confidence for including an object detection
     '''
-    # Load the image as bytes
-    with open(image_path, 'rb') as image_file:
-        image_bytes = image_file.read()
 
     # Get bounding box information of book objects
-    book_information = get_book_bounding_boxes(rekognition, image_bytes, object_threshold)
+    book_information = get_book_bounding_boxes(rekognition, image, object_threshold)
 
     # Perform text detection for each book
     for detection in book_information:
         bounding_box = detection['BoundingBox']
         # Extract text within bounding box
-        extracted_text = extract_text_from_bounding_box(rekognition, image_bytes, bounding_box, text_threshold)
+        extracted_text = extract_text_from_bounding_box(rekognition, image, bounding_box, text_threshold)
         detection['ExtractedText'] = extracted_text
 
     return book_information

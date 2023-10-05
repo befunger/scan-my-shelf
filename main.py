@@ -2,7 +2,7 @@
 
 import googlebooks as books
 import rekognition as rek
-# import image_manipulation as im
+import image_manipulation as im
 import chatgpt as gpt
 
 
@@ -13,11 +13,15 @@ IMAGE_PATH = "C:\\Projects\\scan-my-shelf\\images\\shelf3.jpg"
 MULTI_DETECT = False
 VERIFY_BOOK_TITLES = True
 
+# Open image
+with open(IMAGE_PATH, 'rb') as image_file:
+    image_bytes = image_file.read()
+
 # Initialise Rekognition
 rekognition = rek.initialise_rekognition()
 
 # Gets the bounding boxes of all detected books (including )
-bounding_boxes = rek.detect_books(rekognition, IMAGE_PATH, OBJECT_DETECTION_THRESHOLD)
+bounding_boxes = rek.detect_books(rekognition, image_bytes, OBJECT_DETECTION_THRESHOLD, TEXT_DETECTION_THRESHOLD)
 
 # Get extracted text from each book detected
 extracted_texts = [box['ExtractedText'] for box in bounding_boxes]
