@@ -1,23 +1,20 @@
-'''Illustrates the full pipeline usage of the application'''
+'''Server module using Flask. Hosts a REST endpoint for API calls.'''
+from flask import Flask, request, jsonify
 
 import googlebooks as books
 import rekognition as rek
 import chatgpt as gpt
-from flask import Flask, request, jsonify
 
-
+# Constants used during execution (More testing needed for optimal/dynamic choice)
+OBJECT_DETECTION_THRESHOLD = 10
+TEXT_DETECTION_THRESHOLD = 90
+MULTI_DETECT = False
+VERIFY_BOOK_TITLES = False
 
 app = Flask(__name__)
 
 def recognize_books(image):
     '''Takes an image input and returns json with detected books and information'''
-
-    # Constants used during execution (More testing needed for optimal/dynamic choice)
-    OBJECT_DETECTION_THRESHOLD = 10
-    TEXT_DETECTION_THRESHOLD = 90
-    MULTI_DETECT = False
-    VERIFY_BOOK_TITLES = True
-
     # Initialise Rekognition
     rekognition = rek.initialise_rekognition()
 
