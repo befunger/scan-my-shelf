@@ -37,17 +37,17 @@ def recognize_books(IMAGE_PATH):
         search_queries = [query for query in search_queries if gpt.verify_book(query)]
 
     # Get Google Books result from search queries
-    results = set()
+    results = []
     for search_term in search_queries:
         result = books.search_books(search_term)
         if not result is None and result['totalItems'] > 0:
             item = result['items'][0] # Gets the first result. Note that this seems to often turn up very irrelevant results when the query is poor
             volume_info = item['volumeInfo']
             entry = {'title' : volume_info.get('title'), 'authors' : ', '.join(volume_info.get('authors', ['N/A'])), 'rating' : volume_info.get('averageRating'), 'summary' : volume_info.get('description')}
-            results.add(entry)
+            results.append(entry)
 
     # Convert set of results into json
-    return {"books": list(results)}
+    return {"books": results}
 
 
 @app.route('/recognize_books', methods=['POST'])
