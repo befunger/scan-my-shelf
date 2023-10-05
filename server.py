@@ -56,6 +56,8 @@ def recognize_books_endpoint():
     if 'image' not in request.files:
         print("Request rejected. No image file provided.")
         return jsonify({"error": "No image file provided"})
+    else:
+        print("Request has image. Proceeding to fulfill.")
 
     # Get the image from the request
     image_file = request.files['image']
@@ -65,7 +67,7 @@ def recognize_books_endpoint():
     extracted_books = recognize_books(image_data)
 
     # Return the extracted book information as JSON response
-    print("Request fulfilled")
+    print("Request fulfilled, returning response!")
     return jsonify(extracted_books)
 
 
