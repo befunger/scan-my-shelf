@@ -16,8 +16,10 @@ def test_api_with_image(image_path):
     response = requests.post(API_URL, files={})
 
     # Print the response from the API
-    print("Response:", response.status_code)
-    print("JSON response:", response.json())
+    print("Response code:", response.status_code)
+    print("Books detected:")
+    for book in response.json()['books']:
+        print(f"Title: {book['title']}, Author: {book['authors']}")
 
 if __name__ == '__main__':
     # Image path for test image
