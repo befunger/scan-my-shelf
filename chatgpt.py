@@ -70,13 +70,13 @@ def verify_book(book_text: str,
 
     # return output == 'True'
     if output == 'True':
-        print(f"TRUE: {book_text} matches.")
+        # print(f"TRUE: {book_text} matches.")
         return True
 
     if output == 'False':
-        print(f"FALSE: {book_text} was rejected.")
+        # print(f"FALSE: {book_text} was rejected.")
         return False
 
     # This should never happen
-    print(f"Output format mismatch. Input: {book_text}\nOutput: {output}")
+    # print(f"Output format mismatch. Input: {book_text}\nOutput: {output}")
     return False

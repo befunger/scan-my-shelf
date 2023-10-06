@@ -1,23 +1,30 @@
-'''Illustrates the full pipeline usage of the application'''
+'''Illustrates the full pipeline usage of the application (Similar to server.py, but without launching a server)'''
+import time
 
 import googlebooks as books
 import rekognition as rek
-# import image_manipulation as im
+import image_manipulation as im
 import chatgpt as gpt
 
 
 # Constants used during execution (More testing needed for optimal/dynamic choice)
 OBJECT_DETECTION_THRESHOLD = 10
 TEXT_DETECTION_THRESHOLD = 90
-IMAGE_PATH = "C:\\Projects\\scan-my-shelf\\images\\shelf3.jpg"
+IMAGE_PATH = "C:\\Projects\\scan-my-shelf\\images\\shelf1.jpg"
 MULTI_DETECT = False
-VERIFY_BOOK_TITLES = True
+VERIFY_BOOK_TITLES = False
+
+# Open image
+with open(IMAGE_PATH, 'rb') as image_file:
+    image_bytes = image_file.read()
+
+start_time = time.time()
 
 # Initialise Rekognition
 rekognition = rek.initialise_rekognition()
 
 # Gets the bounding boxes of all detected books (including )
-bounding_boxes = rek.detect_books(rekognition, IMAGE_PATH, OBJECT_DETECTION_THRESHOLD)
+bounding_boxes = rek.detect_books(rekognition, image_bytes, OBJECT_DETECTION_THRESHOLD, TEXT_DETECTION_THRESHOLD)
 
 # Get extracted text from each book detected
 extracted_texts = [box['ExtractedText'] for box in bounding_boxes]
@@ -47,3 +54,6 @@ for search_term in search_queries:
         print(f'{entry}\n----')
     else:
         print("No book found for the extracted text.\n----")
+
+
+print(f"Time elapsed for API call: {time.time() - start_time} seconds.")
