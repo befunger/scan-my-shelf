@@ -1,7 +1,7 @@
 # scan-my-shelf
 An ongoing project to develop an application for book enthusiasts. This repo is still very much a work in progress!
 
-This repo contains the backend API for the scan-my-shelf app. Programmed in Python using Flask.
+This repo contains the backend API for the [scan-my-shelf mobile app](https://github.com/befunger/scan-my-shelf-mobile/) developed in Python using Flask.
 
 # Installation
 * To run this project locally, clone the repository.
