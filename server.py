@@ -63,6 +63,11 @@ def recognize_books_endpoint():
     image_file = request.files['image']
     image_data = image_file.read()
 
+    # TODO: This is temporary to allow testing with sending data to the front end app.
+    import json
+    with open('response.json', 'r', encoding="utf-8") as json_file:
+        return json.load(json_file)
+
     # Call your recognition function
     extracted_books = recognize_books(image_data)
 
