@@ -38,5 +38,5 @@ if __name__ == '__main__':
     print(f"Time elapsed for API call: {time.time() - start_time} seconds.")
 
     start_time = time.time()
-    # test_api_without_image() // Send empty request to verify behaviour
+    test_api_without_image() # Send empty request to verify behaviour
     print(f"Time elapsed for empty API call: {time.time() - start_time} seconds.")
