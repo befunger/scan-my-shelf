@@ -4,6 +4,7 @@ from flask import Flask, request, jsonify
 import googlebooks as books
 import rekognition as rek
 import chatgpt as gpt
+import json
 
 # Constants used during execution (More testing needed for optimal/dynamic choice)
 OBJECT_DETECTION_THRESHOLD = 10
@@ -52,6 +53,12 @@ def recognize_books(image):
 def recognize_books_endpoint():
     '''Endpoint for receiving API requests to detect books'''
     print("Request incoming!")
+
+    # This is temporary to allow testing with sending data to the front end app.
+    if 'testflag' in request.files:
+        with open('response.json', 'r', encoding="utf-8") as json_file:
+            return json.load(json_file)
+
     # Check if the request contains a file
     if 'image' not in request.files:
         print("Request rejected. No image file provided.")
@@ -62,11 +69,6 @@ def recognize_books_endpoint():
     # Get the image from the request
     image_file = request.files['image']
     image_data = image_file.read()
-
-    # TODO: This is temporary to allow testing with sending data to the front end app.
-    import json
-    with open('response.json', 'r', encoding="utf-8") as json_file:
-        return json.load(json_file)
 
     # Call your recognition function
     extracted_books = recognize_books(image_data)

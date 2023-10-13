@@ -28,6 +28,17 @@ def test_api_without_image():
     # Print the response from the API
     print("Response code:", response.status_code)
 
+def test_api_with_test_flag():
+    '''Tests the API with the test flag raised for a dummy response'''
+
+    # Make a POST request to the API endpoint with testflag up
+    response = requests.post(API_URL, files={'testflag': True})
+
+    # Print the response from the API
+    print("Response code:", response.status_code)
+    for index, book in enumerate(response.json()['books'], start=1):
+        print(f"Book {index}.\n    Title: {book['title']}\n    Author: {book['author']}")
+
 if __name__ == '__main__':
     # Image path for test image
     IMAGE_PATH = "C:\\Projects\\scan-my-shelf\\images\\shelf1.jpg"
@@ -40,3 +51,7 @@ if __name__ == '__main__':
     start_time = time.time()
     test_api_without_image() # Send empty request to verify behaviour
     print(f"Time elapsed for empty API call: {time.time() - start_time} seconds.")
+
+    start_time = time.time()
+    test_api_with_test_flag() # Send empty request to verify behaviour
+    print(f"Time elapsed for testflag API call: {time.time() - start_time} seconds.")
